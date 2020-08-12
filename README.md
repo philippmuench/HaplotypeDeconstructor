@@ -56,8 +56,17 @@ Now we can better organize the by additional metadata groups
 ```r
 data(omm2_metadata)
 plotSamplesByGroup(decomposed, omm2_metadata, normalize = F, percent = T)
-ggsave("bygroup.png", width = 8, height = 18)
+ggsave("bygroup.png", width = 9, height = 25)
 ```
 
 ![sampleplot.png](bygroup.png)
 
+We can visualize the SNP annotations for each Haplotype
+
+```r
+data(omm_snp_annotation)
+plotHaplotypeAnnotation(decomposed, omm_snp_annotation, sig_threshold = 4)
+ggsave("haplotypefunction.png", width = 12, height = 12)
+```
+
+![haplotypefunction.png](haplotypefunction.png)

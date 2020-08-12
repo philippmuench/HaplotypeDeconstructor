@@ -49,9 +49,6 @@ plotSamples <- function(s, normalize = FALSE, percent = FALSE) {
   return(p)
 }
 
-
-
-
 # 
 #' @export
 plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
@@ -73,6 +70,42 @@ plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
   p <- p + scale_fill_brewer(palette = "Set3") + theme_minimal() + coord_flip()
   p <- p + facet_grid(group ~ ., space = "free", scales = "free")
   p <- p + xlab("") + ylab("Haplotype Contribution")
+  
+  return(p)
+}
+
+# 
+#' @export
+plotHaplotypeAnnotation <- function(decomposed, omm_snp_annotation, sig_id = 2,
+                                    hide_hyp = T, sig_threshold = 5){
+  
+  sig <- data.matrix(decomposed$signatures)
+  res <- list()
+  for (i in seq_along(1:ncol(sig))){
+    message(i)
+    one_sig <- as.data.frame(sig[,i])
+    one_sig$annotation <- omm_snp_annotation[match(rownames(one_sig),
+                                                   omm_snp_annotation$id),]$description
+    if (hide_hyp){
+      one_sig <- one_sig[which(one_sig$annotation != "outside ORFs" &
+                                 one_sig$annotation != "hypothetical protein"),]
+    }
+    
+    colnames(one_sig) <-c("value", "annotation")
+    one_sig <- one_sig[order(-one_sig$value),] 
+    one_sig$id <- rownames(one_sig)
+    one_sig <- one_sig[which(one_sig$value > sig_threshold),]
+    one_sig$sig_num <- i
+    res[[i]] <- one_sig
+  }
+  
+  all_sig <- do.call(rbind, res)
+ 
+  p <- ggplot(all_sig, aes(x= reorder(annotation, value), y = value, fill = factor(sig_num)))
+  p <- p + geom_bar(stat = "identity")
+  p <- p + coord_flip() + theme_minimal() + xlab("") 
+  p <- p + scale_fill_brewer(palette = "Set3") 
+  p <- p + facet_wrap(. ~ sig_num)
   
   return(p)
 }
