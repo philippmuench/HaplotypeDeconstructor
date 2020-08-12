@@ -19,7 +19,7 @@ dim(omm2)
 [1] 1691   134
 ```
 
-Here, we have 134 studies of which we have 1691 SNPs in total for the genome _Akkermansia muciniphila_ faecalis_. In general, the user needs to specify the number of haplotypes to deconstruct for. Since this is unkown, the function `assessNumberHaplotyes` tries out different values and returns the explained variance per test. E.g. 
+Here, we have 134 studies of which we have 1691 SNPs in total for the genome _Akkermansia muciniphila_. In general, the user needs to specify the number of haplotypes to deconstruct for. Since this is unkown, the function `assessNumberHaplotyes` tries out different values and returns the explained variance per test. E.g. 
 
 ```r
 # check how many haplotypes are in the community
@@ -34,7 +34,7 @@ Will evaluate 2 to 30 haplotypes and output a graphic similar to this:
 Based on this figure it seems that there are around 29 (?) haplotypes present, so we do the final decomposition. But for now we use a lower number since its hard to draw figures with 29 colors
 
 ```r
-decomposed <- findHaplotypes(omm2, 8)
+decomposed <- findHaplotypes(omm2, 12)
 plotHaplotypeMap(decomposed)
 ```
 
