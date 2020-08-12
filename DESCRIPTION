@@ -1,4 +1,4 @@
-Package: HapotypeDeconstructor
+Package: HaplotypeDeconstructor
 Type: Package
 Title: Uses NMF to deconstruct haplotypes from SNP profiles
 Version: 0.1.0

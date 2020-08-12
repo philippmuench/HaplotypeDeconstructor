@@ -19,7 +19,7 @@ dat$snp_id <- paste0(dat$alteration, " ",dat$POS)
 dat$sample <- paste0("reseq study ",dat$mouse.id, " d",dat$day, "", dat$mouse.group)
 df_reseq <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
 
-df <- rbind(df_claudia, df_ab, df_reseq )
+df <- rbind(df_claudia, df_ab, df_reseq)
 
 # prepare data
 omm <- tidyr::spread(df, sample, AF)

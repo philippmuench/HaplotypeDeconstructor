@@ -76,8 +76,8 @@ plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
 
 # 
 #' @export
-plotHaplotypeAnnotation <- function(decomposed, omm_snp_annotation, sig_id = 2,
-                                    hide_hyp = T, sig_threshold = 5){
+plotHaplotypeAnnotation <- function(decomposed, omm_snp_annotation,
+                                    hide_hyp = T, sig_threshold = 0.005){
   
   sig <- data.matrix(decomposed$signatures)
   res <- list()

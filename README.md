@@ -64,7 +64,7 @@ We can visualize the SNP annotations for each Haplotype
 
 ```r
 data(omm_snp_annotation)
-plotHaplotypeAnnotation(decomposed, omm_snp_annotation, sig_threshold = 4)
+plotHaplotypeAnnotation(decomposed, omm_snp_annotation, sig_threshold = 0.001)
 ggsave("haplotypefunction.png", width = 12, height = 12)
 ```
 
