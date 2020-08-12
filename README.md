@@ -43,8 +43,17 @@ plotHaplotypeMap(decomposed)
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
 ```r
-plotSamples(decomposed, normalize = F, percent =T)
+plotSamples(decomposed, normalize = F, percent = F)
 ```
 
 ![sampleplot.png](sampleplot.png)
+
+Now we can better organize the by additional metadata groups
+
+```r
+data(omm2_metadata)
+plotSamplesByGroup(decomposed, omm2_metadata, normalize = F, percent = F)
+```
+
+![sampleplot.png](bygroup.png)
 

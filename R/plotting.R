@@ -27,7 +27,8 @@ plotNumberHaplotyes <- function(gof) {
 }
 
 
-
+# 
+#' @export
 plotSamples <- function(s, normalize = FALSE, percent = FALSE) {
   h <- data.matrix(s$samples)
   if(normalize) {
@@ -45,5 +46,33 @@ plotSamples <- function(s, normalize = FALSE, percent = FALSE) {
   p <- p + scale_fill_brewer(palette = "Set3") + coord_flip() + theme_bw()
   p <- p + xlab("") + ylab("Haplotype Contribution")
 
+  return(p)
+}
+
+
+
+
+# 
+#' @export
+plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
+  h <- data.matrix(s$samples)
+  if(normalize) {
+    h = h / rowSums(h)
+    if(percent) {
+      h = h * 100
+    }
+  }
+  w_df = reshape2::melt(h, varnames = c("sample", "signature"))
+  w_df$signature = factor(w_df$signature)
+  
+  w_df$group <- m[match(w_df$sample, m$sample),]$group
+  w_df$day <- m[match(w_df$sample, m$sample),]$day
+  
+  p <- ggplot(w_df, aes (x = reorder(sample, day), y = value, fill = signature))
+  p <- p + geom_bar( color = "black", size = 0.3, stat = "identity", position = "stack")
+  p <- p + scale_fill_brewer(palette = "Set3") + theme_minimal() + coord_flip()
+  p <- p + facet_grid(group ~ ., space = "free", scales = "free")
+  p <- p + xlab("") + ylab("Haplotype Contribution")
+  
   return(p)
 }
