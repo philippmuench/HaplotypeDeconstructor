@@ -1,4 +1,5 @@
-
+# # applies decompositon on x, for number of signatures r 
+#' @export
 nmfDecomposition <- function(x, r, ..., includeFit = FALSE) {
   y = NMF::nmf(x, r, method = 'ns', theta=0.7, ...)
   w = basis(y) ## signatures x k
@@ -17,7 +18,8 @@ nmfDecomposition <- function(x, r, ..., includeFit = FALSE) {
   return(res)
 }
 
-# applies decompositon on x, for number of signatures r 
+# # applies decompositon on x, for number of signatures r 
+#' @export
 findSignatures <- function(x, r) {
   dc <- nmfDecomposition(x, r, includeFit = FALSE)
   res <- list("signatures" = dc$w, "samples" = dc$h,

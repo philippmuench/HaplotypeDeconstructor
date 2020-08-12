@@ -1,3 +1,5 @@
+# 
+#' @export
 assessOneSignature <- function(m, n) {
   sigs <- findSignatures(m, n)
   fitted <- data.matrix(sigs$fitted)
@@ -9,6 +11,8 @@ assessOneSignature <- function(m, n) {
   return(gof)
 }
 
+# 
+#' @export
 assessNumberHaplotyes <- function(m, nHaps, nReplicates = 1) {
   ## compute fit statistics for
   ## - outer :: number of signatures

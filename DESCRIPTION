@@ -1,11 +1,15 @@
 Package: HapotypeDeconstructor
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Uses NMF to deconstruct haplotypes from SNP profiles
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Philipp Münch
+Maintainer: Philipp Münch <muench@hsph.harvard.edu>
+Description: Uses NMF to deconstruct haplotypes from SNP profiles
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    ggplot2,
+    reshape2,
+    NMF
+RoxygenNote: 7.1.1

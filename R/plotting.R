@@ -1,3 +1,5 @@
+# 
+#' @export
 plotHaplotypeMap <- function(sigs) {
   df <- data.matrix(sigs$signatures)
   ha <- ComplexHeatmap::Heatmap(df,
@@ -10,8 +12,10 @@ plotHaplotypeMap <- function(sigs) {
   return(ha)
 }
 
+# 
+#' @export
 plotNumberHaplotyes <- function(gof) {
-  m = melt(gof, id.vars = c("NumberHaplotyes", "Replicate"),
+  m = reshape2::melt(gof, id.vars = c("NumberHaplotyes", "Replicate"),
            measure.vars = c("ExplainedVariance"), variable.name = "stat")
   p = ggplot(m, aes_string(x = "NumberHaplotyes", y = "value", group = "NumberHaplotyes"))
   p = p + stat_summary(fun.y = mean, colour = "red", size = 2.5, geom = "point")
