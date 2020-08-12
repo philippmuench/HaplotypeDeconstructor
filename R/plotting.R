@@ -25,3 +25,25 @@ plotNumberHaplotyes <- function(gof) {
   p = p + theme_bw() + xlab("Number of Haplotyes") + ylab("explained variance")
   return(p)
 }
+
+
+
+plotSamples <- function(s, normalize = FALSE, percent = FALSE) {
+  h <- data.matrix(s$samples)
+  if(normalize) {
+    h = h / rowSums(h)
+    if(percent) {
+      h = h * 100
+    }
+  }
+  w_df = reshape2::melt(h, varnames = c("sample", "signature"))
+  w_df$signature = factor(w_df$signature)
+  
+  p <- ggplot(w_df)
+  p <- p + geom_bar(aes_string(x = "sample", y = "value", fill = "signature"),
+                   color = "black", size = 0.3, stat = "identity", position = "stack")
+  p <- p + scale_fill_brewer(palette = "Set3") + coord_flip() + theme_bw()
+  p <- p + xlab("") + ylab("Haplotype Contribution")
+
+  return(p)
+}

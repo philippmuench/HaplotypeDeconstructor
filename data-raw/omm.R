@@ -1,3 +1,4 @@
+
 # claudia
 dat <- readRDS("data-raw/omm_claudia_new.rds")
 dat <- dat[which(dat$chr == "Enterococcus_faecalis"),]
