@@ -37,10 +37,9 @@ Based on this figure it seems that there are around 29 (?) haplotypes present, s
 ```r
 decomposed <- findHaplotypes(omm2, 12)
 plotHaplotypeMap(decomposed)
-ggsave("decomposed.png", width = 5, height = 5)
 ```
 
-![decomposed.png](decomposed.png)
+![heat.png](heat.png)
 
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
