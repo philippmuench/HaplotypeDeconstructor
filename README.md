@@ -1,47 +1,44 @@
 # Haplotype reconstruction using non-negative matrix factorization 
 
+Detects linear combinations of SNPs (signatures) using NMF that explain a global SNP profile. 
 
-## usage
+## Installation
 
 ```r
-# claudia
-dat <- readRDS("data/omm_claudia_new.rds")
-dat <- dat[which(dat$chr == "Enterococcus_faecalis"),]
-dat$snp_id <- paste0(dat$alteration, " ",dat$POS)
-dat$sample <-  paste0("claudia ", dat$sample)
-df_claudia <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
-
-
-dat <- readRDS("data/omm_ab.rds")
-dat <- dat[which(dat$chr == "Enterococcus_faecalis"),]
-dat$snp_id <- paste0(dat$alteration, " ",dat$POS)
-dat$sample <- paste0("AB study ",dat$mouse.id, " d",dat$day, " ", dat$mouse.group)
-df_ab <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
-
-# reseq
-dat <- readRDS("data/reseq.rds")
-dat <- dat[which(dat$chr == "Enterococcus_faecalis"),]
-dat$snp_id <- paste0(dat$alteration, " ",dat$POS)
-dat$sample <- paste0("reseq study ",dat$mouse.id, " d",dat$day, "", dat$mouse.group)
-df_reseq <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
-
-df <- rbind(df_claudia, df_ab, df_reseq )
-
-library(tidyr)
-require(reshape2)
-
-# prepare data
-data_wide <- spread(df, sample, AF)
-data_wide[is.na(data_wide)] <- 0
-rownames(data_wide) <- data_wide$id
-data_wide$id <- NULL
-
-
-# how many haplotypes?
-gof <- assessNumberHaplotyes(data_wide,2:30, nReplicates = 1)
-plotNumberHaplotyes(gof)
-
-# run
-res <- findSignatures(data_wide, 10)
-plotHaplotypeMap(res)
+devtools::install_github("philippmuench/HaplotypeDeconstructor")
 ```
+
+## How it works
+
+Input to the haplotype deconstruction is the SNP profile (in terms of allele frequency per SNP) of multiple observations (i.e. independent studies on the same community) such as `data(omm)`
+
+```r
+library(HaplotypeDeconstructor)
+data(omm)
+dim(omm)
+[1] 1431   39
+```
+
+Here, we have 39 studies of which we have 1431 SNPs in total for the genome _Enterococcus_faecalis_. In general, the user needs to specify the number of haplotypes to deconstruct for. Since this is unkown, the function `assessNumberHaplotyes` tries out different values and returns the explained variance per test. E.g. 
+
+```r
+# check how many haplotypes are in the community
+gof <- assessNumberHaplotyes(omm, 2:30, nReplicates = 2)
+plotNumberHaplotyes(gof)
+```
+
+Will evaluate 2 to 30 haplotypes and output a graphic similar to this:
+
+![gof.png](gof.png)
+
+Based on this figure it seems that there are around 13 haplotypes present, so we do the final decomposition
+
+```r
+decomposed <- findHaplotypes(omm, 13)
+plotHaplotypeMap(decomposed)
+```
+
+![decomposed.png](decomposed.png)
+
+The result is a heatmap showing the SNPs (y axis) and the Haplotypes (or "signatures") on the x axis. 
+

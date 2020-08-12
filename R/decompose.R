@@ -20,7 +20,7 @@ nmfDecomposition <- function(x, r, ..., includeFit = FALSE) {
 
 # # applies decompositon on x, for number of signatures r 
 #' @export
-findSignatures <- function(x, r) {
+findHaplotypes <- function(x, r) {
   dc <- nmfDecomposition(x, r, includeFit = FALSE)
   res <- list("signatures" = dc$w, "samples" = dc$h,
               "fitted" = dc$v, "observed" = dc$m, 
