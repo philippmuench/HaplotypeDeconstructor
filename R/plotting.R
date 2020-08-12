@@ -7,7 +7,8 @@ plotHaplotypeMap <- function(sigs) {
                                column_title = "Haplotype contributions",
                                show_row_names = F,
                                show_column_dend = F,
-                               show_row_dend = F)
+                               show_row_dend = F,
+                               cluster_columns = F)
   
   return(ha)
 }
@@ -21,6 +22,6 @@ plotNumberHaplotyes <- function(gof) {
   p = p + stat_summary(fun.y = mean, colour = "red", size = 2.5, geom = "point")
   p = p + geom_point(color = "black", shape = 3)
   p = p + facet_wrap(~stat, nrow = 2, scales = "free")
-  p = p + theme_bw() + xlab("Number of Haplotyes") + ylab("Statistic")
+  p = p + theme_bw() + xlab("Number of Haplotyes") + ylab("explained variance")
   return(p)
 }

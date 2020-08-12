@@ -1,7 +1,7 @@
 # 
 #' @export
 assessOneSignature <- function(m, n) {
-  sigs <- findSignatures(m, n)
+  sigs <- findHaplotypes(m, n)
   fitted <- data.matrix(sigs$fitted)
   observed <- data.matrix(sigs$observed)
   exvar <- evar(fitted, observed)

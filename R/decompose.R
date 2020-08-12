@@ -9,7 +9,7 @@ nmfDecomposition <- function(x, r, ..., includeFit = FALSE) {
   w = w[ ,ord]
   h = h[ ,ord]
   ## name signatures: S1, ..., Sn
-  sig_names = paste0("S", 1:r)
+  sig_names = paste0("H", 1:r)
   colnames(w) = colnames(h) = sig_names
   v = fitted(y)
   res = list(w = w, h = h, v = v, m = x, r = r)
