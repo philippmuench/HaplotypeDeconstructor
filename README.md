@@ -1,6 +1,6 @@
 # Haplotype reconstruction using non-negative matrix factorization 
 
-Detects linear combinations of SNPs (signatures) using NMF that explain a global SNP profile. This library is heavily based on the MutationalSignatures package.
+Detects linear combinations of SNPs (signatures) using NMF that explain a global SNP profile. This library is heavily based on the [SomaticSignatures](https://github.com/juliangehring/SomaticSignatures) package.
 
 ## Installation
 
@@ -23,8 +23,9 @@ Here, we have 134 studies of which we have 1691 SNPs in total for the genome _Ak
 
 ```r
 # check how many haplotypes are in the community
-gof <- assessNumberHaplotyes(omm2, 2:30, nReplicates = 1)
+gof <- assessNumberHaplotyes(omm2, 2:30, nReplicates = 2)
 plotNumberHaplotyes(gof)
+ggsave("gof.png", width = 8, height = 5)
 ```
 
 Will evaluate 2 to 30 haplotypes and output a graphic similar to this:
@@ -36,6 +37,7 @@ Based on this figure it seems that there are around 29 (?) haplotypes present, s
 ```r
 decomposed <- findHaplotypes(omm2, 12)
 plotHaplotypeMap(decomposed)
+ggsave("decomposed.png", width = 5, height = 5)
 ```
 
 ![decomposed.png](decomposed.png)
@@ -43,7 +45,8 @@ plotHaplotypeMap(decomposed)
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
 ```r
-plotSamples(decomposed, normalize = F, percent = F)
+plotSamples(decomposed, normalize = F, percent = T)
+ggsave("sampleplot.png", width = 8, height = 18)
 ```
 
 ![sampleplot.png](sampleplot.png)
@@ -52,7 +55,8 @@ Now we can better organize the by additional metadata groups
 
 ```r
 data(omm2_metadata)
-plotSamplesByGroup(decomposed, omm2_metadata, normalize = F, percent = F)
+plotSamplesByGroup(decomposed, omm2_metadata, normalize = F, percent = T)
+ggsave("bygroup.png", width = 8, height = 18)
 ```
 
 ![sampleplot.png](bygroup.png)
