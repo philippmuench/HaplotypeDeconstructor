@@ -69,3 +69,5 @@ ggsave("haplotypefunction.png", width = 12, height = 12)
 ```
 
 ![haplotypefunction.png](haplotypefunction.png)
+
+

@@ -1,18 +1,18 @@
 
 ```{r}
 library(HaplotypeDeconstructor)
-data(omm3)
+data(omm4)
 ```
 
 ```{r}
-decomposed <- findHaplotypes(omm3, 3)
+decomposed <- findHaplotypes(omm4, 3)
 plotHaplotypeMap(decomposed)
 ```
 
 
 ```r
 # check how many haplotypes are in the community
-gof <- assessNumberHaplotyes(omm3, 2:5, nReplicates = 3)
+gof <- assessNumberHaplotyes(omm4, 2:6, nReplicates = 3)
 plotNumberHaplotyes(gof)
 ```
 
@@ -20,12 +20,11 @@ plotNumberHaplotyes(gof)
 plotSamples(decomposed, normalize = F, percent = T)
 ```
 
-
 Now we can better organize the by additional metadata groups
 
 ```r
 data(omm2_metadata)
-plotSamplesByGroup(decomposed, omm2_metadata, normalize = T, percent = T)
+plotSamplesByGroup(decomposed, omm2_metadata, normalize = F, percent = T)
 ```
 
 

@@ -1,4 +1,4 @@
-bug <- "Clostridium_innocuum"
+bug <- "Blautia_coccoides"
 # claudia
 dat <- readRDS("data-raw/omm_claudia_new.rds")
 dat <- dat[which(dat$chr == bug),]
@@ -23,9 +23,9 @@ df_reseq <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
 df <- rbind(df_claudia, df_ab, df_reseq)
 
 # prepare data
-omm3 <- tidyr::spread(df, sample, AF)
-omm3[is.na(omm3)] <- 0
-rownames(omm3) <- omm3$id
-omm3$id <- NULL
+omm4 <- tidyr::spread(df, sample, AF)
+omm4[is.na(omm4)] <- 0
+rownames(omm4) <- omm4$id
+omm4$id <- NULL
 
-usethis::use_data(omm3, overwrite = TRUE)
+usethis::use_data(omm4, overwrite = TRUE)

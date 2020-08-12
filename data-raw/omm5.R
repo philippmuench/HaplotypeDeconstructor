@@ -1,4 +1,4 @@
-bug <- "Clostridium_innocuum"
+bug <- "Muribaculum_intestinale"
 # claudia
 dat <- readRDS("data-raw/omm_claudia_new.rds")
 dat <- dat[which(dat$chr == bug),]
@@ -13,19 +13,13 @@ dat$sample <- paste0("AB study ",dat$mouse.id, " d",dat$day, " ",
                      group = dat$group, sample = dat$mouse.group)
 df_ab <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
 
-# reseq
-dat <- readRDS("data-raw/reseq.rds")
-dat <- dat[which(dat$chr == bug),]
-dat$snp_id <- paste0(dat$alteration, " ",dat$POS)
-dat$sample <- paste0("reseq study ",dat$mouse.id, " d",dat$day, "", dat$mouse.group)
-df_reseq <- data.frame(id = dat$snp_id, AF = dat$AF, sample = dat$sample)
 
-df <- rbind(df_claudia, df_ab, df_reseq)
+df <- rbind(df_claudia, df_ab)
 
 # prepare data
-omm3 <- tidyr::spread(df, sample, AF)
-omm3[is.na(omm3)] <- 0
-rownames(omm3) <- omm3$id
-omm3$id <- NULL
+omm5 <- tidyr::spread(df, sample, AF)
+omm5[is.na(omm5)] <- 0
+rownames(omm5) <- omm5$id
+omm5$id <- NULL
 
-usethis::use_data(omm3, overwrite = TRUE)
+usethis::use_data(omm5, overwrite = TRUE)
