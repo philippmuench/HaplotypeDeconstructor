@@ -30,7 +30,6 @@ ggsave("gof.png", width = 8, height = 5)
 
 Will evaluate 2 to 30 haplotypes and output a graphic similar to this:
 
-![gof.png](gof.png)
 
 Based on this figure it seems that there are around 29 (?) haplotypes present, so we do the final decomposition. But for now we use a lower number since its hard to draw figures with 29 colors
 
