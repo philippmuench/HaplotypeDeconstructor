@@ -1,8 +1,8 @@
 # # applies decompositon on x, for number of signatures r 
 #' @export
 nmfDecomposition <- function(x, r, includeFit = FALSE) {
-  y = NMF::nmf(x, r, method ='lee')
-  w = basis(y) ## signatures x k
+  y = NMF::nmf(x, r, method= "snmf/l")
+  w = NMF::basis(y) ## signatures x k
   h = t(coef(y)) ## samples x k
   ## order signatures
   ord = order(rowMax(t(w)), decreasing = TRUE)
@@ -29,6 +29,8 @@ findHaplotypes <- function(x, r) {
               "nHapotypes" = r)
   return(res)
 }
+
+
 
 
 
