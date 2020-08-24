@@ -62,6 +62,9 @@ plotSamples(decomposed, normalize = F, percent = T)
 Which correctly identifies that a haplotype (here H3) is present in samples V1 - V5 in equal proportions, a second haplotype H2 is present on samples V6-V8 and a third haplotpye H1 is present on all samples and is increasing in its contribution.
 
 
+## Haplotype detection on real data
+
+Here we show how HaplotypeDeconstructor can be applied on a SNP profile we get after applying LoFreq on a collection of samples we took from the OligoMM community on different mouse and on different time points. 
 
 ```r
 library(HaplotypeDeconstructor)
@@ -74,31 +77,42 @@ Here, we have 134 studies of which we have 1691 SNPs in total for the genome _Ak
 
 ```r
 # check how many haplotypes are in the community
-gof <- assessNumberHaplotyes(omm2, 2:15, nReplicates = 1)
+gof <- assessNumberHaplotyes(omm2, 2:15, nReplicates = 1) # this can take a while since it will evaluate many NMFs
 plotNumberHaplotyes(gof)
-ggsave("gof.png", width = 8, height = 5)
+ggsave("gof2.png", width = 8, height = 5)
 ```
 
 Will evaluate 2 to 30 haplotypes and output a graphic similar to this:
 
 
-Based on this figure it seems that there are around 29 (?) haplotypes present, so we do the final decomposition. But for now we use a lower number since its hard to draw figures with 29 colors
+Based on this figure it seems that there are around 14 haplotypes present, so we do the final decomposition.
 
 ```r
-decomposed <- findHaplotypes(omm2, 6)
+decomposed <- findHaplotypes(omm2, 14)
 plotHaplotypeMap(decomposed)
 ```
+
+On this plot once can see which SNPs are contributing to a Haplotype, 
 
 ![heat.png](heat.png)
 
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
 ```r
-plotSamples(decomposed, normalize = F, percent = T)
-ggsave("sampleplot.png", width = 8, height = 18)
+plotSamples(decomposed, normalize = F, remove.sample.names =T)
+ggsave("decomposed_1.png", width = 8, height = 10)
 ```
 
-![sampleplot.png](sampleplot.png)
+![decomposed_1.png](decomposed_1.png)
+
+and the normalized version
+
+```r
+plotSamples(decomposed, normalize = T, remove.sample.names =T)
+ggsave("decomposed_2.png", width = 8, height = 10)
+```
+
+![sampleplot.png](decomposed_2.png)
 
 Now we can better organize the by additional metadata groups
 

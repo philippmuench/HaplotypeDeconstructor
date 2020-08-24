@@ -2,13 +2,18 @@
 #' @export
 plotHaplotypeMap <- function(sigs) {
   df <- data.matrix(sigs$signatures)
+  col_fun <- circlize::colorRamp2(c(0, 0.001, 1, 5), c("white", "yellow", "red", "black"))
+  
   ha <- ComplexHeatmap::Heatmap(df,
+                               name = "contribution",
                                border = TRUE,
                                column_title = "Haplotype contributions",
                                show_row_names = F,
+                               cluster_rows = F,
                                show_column_dend = F,
                                show_row_dend = F,
-                               cluster_columns = F)
+                               cluster_columns = T,
+                               col = col_fun)
   
   return(ha)
 }
@@ -29,22 +34,29 @@ plotNumberHaplotyes <- function(gof) {
 
 # 
 #' @export
-plotSamples <- function(s, normalize = FALSE, percent = FALSE) {
+plotSamples <- function(s, normalize = FALSE, remove.sample.names =F) {
   h <- data.matrix(s$samples)
   if(normalize) {
     h = h / rowSums(h)
-    if(percent) {
-      h = h * 100
-    }
+    
   }
-  w_df = reshape2::melt(h, varnames = c("sample", "signature"))
-  w_df$signature = factor(w_df$signature)
+  w_df <- reshape2::melt(h, varnames = c("sample", "haplotypes"))
+  w_df$haplotypes = factor(w_df$haplotypes)
+  
+  palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
   
   p <- ggplot(w_df)
-  p <- p + geom_bar(aes_string(x = "sample", y = "value", fill = "signature"),
+  p <- p + geom_bar(aes_string(x = "sample", y = "value", fill = "haplotypes"),
                    color = "black", size = 0.3, stat = "identity", position = "stack")
-  p <- p + scale_fill_brewer(palette = "Set3") + coord_flip() + theme_bw()
+  p <- p + scale_fill_manual(values = palette) + coord_flip() + theme_bw()
   p <- p + xlab("") + ylab("Haplotype Contribution")
+  p <- p +theme_bw() + theme(panel.border = element_blank(),
+                             panel.grid.major = element_blank(),
+                             panel.grid.minor = element_blank(),
+                             axis.line = element_line(color = "black"))
+  p <- p + scale_y_continuous(expand = c(0, 0), limits = c(0, NA))
+  if(remove.sample.names)
+    p <- p + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) 
 
   return(p)
 }
