@@ -32,7 +32,7 @@ data(syn)
 ComplexHeatmap::Heatmap(syn, show_row_dend = F, cluster_columns = F)
 ````
 
-![man/images/syn.png](syn.png)
+![layout synthetic experiment](man/images/syn.png)
 
 In detail, the syntethic datasets consists of sets of SNPs that 
 
@@ -48,7 +48,7 @@ gof <- assessNumberHaplotyes(syn, 2:6, nReplicates = 1)
 plotNumberHaplotyes(gof)
 ```
 
-![man/images/gof.png](gof.png)
+![goodness of fit of NMF on synthetic sample](man/images/gof.png)
 
 We see that the larged fraction of explained variance is reached for 3 haplotpyes, which is equal to the ground truth. We can use this number to recover the haplotypes using `findHaplotypes`
 
@@ -57,7 +57,7 @@ decomposed <- findHaplotypes(syn, 3)
 plotHaplotypeMap(decomposed)
 plotSamples(decomposed, normalize = F, percent = T)
 ```
-![man/images/syn_dec.png](syn_dec.png)
+![decomposed haplotypes on synthetic sample](man/images/syn_dec.png)
 
 Which correctly identifies that a haplotype (here H3) is present in samples V1 - V5 in equal proportions, a second haplotype H2 is present on samples V6-V8 and a third haplotpye H1 is present on all samples and is increasing in its contribution.
 
@@ -94,7 +94,7 @@ plotHaplotypeMap(decomposed)
 
 On this plot once can see which SNPs are contributing to a Haplotype, 
 
-![man/images/heat.png](heat.png)
+![Haplotype heatmap](man/images/heat.png)
 
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
@@ -103,7 +103,7 @@ plotSamples(decomposed, normalize = F, remove.sample.names =T)
 ggsave("decomposed_1.png", width = 8, height = 10)
 ```
 
-![man/images/decomposed_1.png](decomposed_1.png)
+![Decomposed contributions](man/images/decomposed_1.png)
 
 and the normalized version
 
@@ -112,7 +112,7 @@ plotSamples(decomposed, normalize = T, remove.sample.names =T)
 ggsave("decomposed_2.png", width = 8, height = 10)
 ```
 
-![man/images/decomposed_2.png](decomposed_2.png)
+![Relative decomposed contributions](man/images/decomposed_2.png)
 
 Now we can better organize the by additional metadata groups
 
@@ -122,7 +122,7 @@ plotSamplesByGroup(decomposed, omm_metadata, normalize = F, percent = T)
 ggsave("bygroup.png", width = 9, height = 25)
 ```
 
-![man/images/sampleplot.png](bygroup.png)
+![Contributions by group](man/images/sampleplot.png)
 
 We can visualize the SNP annotations for each Haplotype
 
@@ -132,28 +132,4 @@ plotHaplotypeAnnotation(decomposed, omm_snp_annotation, sig_threshold = 0.1)
 ggsave("haplotypefunction.png", width = 12, height = 12)
 ```
 
-![man/images/haplotypefunction.png](haplotypefunction.png)
-
-
-```r
-library(gaston)
-
-res <- cor(omm)
-res[res < 0] <- 0
-
-p <- LD.plot(res)
-
-```
-
-
-```r
-library(gaston)
-
-res <- cor(t(omm))
-res[res < 0] <- 0
-
-p <- LD.plot(res, 
-max.dist = 1e6,polygon.par = list(border = NA), write.ld = NULL)
-
-```
-
+![by function](man/images/haplotypefunction.png)
