@@ -112,7 +112,7 @@ plotSamples(decomposed, normalize = T, remove.sample.names =T)
 ggsave("decomposed_2.png", width = 8, height = 10)
 ```
 
-![sampleplot.png](decomposed_2.png)
+![decomposed_2.png](decomposed_2.png)
 
 Now we can better organize the by additional metadata groups
 

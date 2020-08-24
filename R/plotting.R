@@ -36,13 +36,12 @@ plotNumberHaplotyes <- function(gof) {
 #' @export
 plotSamples <- function(s, normalize = FALSE, remove.sample.names =F) {
   h <- data.matrix(s$samples)
-  if(normalize) {
+  if(normalize)
     h = h / rowSums(h)
-    
-  }
   w_df <- reshape2::melt(h, varnames = c("sample", "haplotypes"))
   w_df$haplotypes = factor(w_df$haplotypes)
   
+  set.seed(42)
   palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
   
   p <- ggplot(w_df)
@@ -50,7 +49,7 @@ plotSamples <- function(s, normalize = FALSE, remove.sample.names =F) {
                    color = "black", size = 0.3, stat = "identity", position = "stack")
   p <- p + scale_fill_manual(values = palette) + coord_flip() + theme_bw()
   p <- p + xlab("") + ylab("Haplotype Contribution")
-  p <- p +theme_bw() + theme(panel.border = element_blank(),
+  p <- p + theme_bw() + theme(panel.border = element_blank(),
                              panel.grid.major = element_blank(),
                              panel.grid.minor = element_blank(),
                              axis.line = element_line(color = "black"))
@@ -63,25 +62,34 @@ plotSamples <- function(s, normalize = FALSE, remove.sample.names =F) {
 
 # 
 #' @export
-plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
+plotSamplesByGroup <- function(s, m, normalize = FALSE) {
   h <- data.matrix(s$samples)
-  if(normalize) {
+  if(normalize)
     h = h / rowSums(h)
-    if(percent) {
-      h = h * 100
-    }
-  }
-  w_df = reshape2::melt(h, varnames = c("sample", "signature"))
-  w_df$signature = factor(w_df$signature)
+  w_df <- reshape2::melt(h, varnames = c("sample", "signature"))
+  w_df$signature <- factor(w_df$signature)
   
+  set.seed(42)
+  palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
+
   w_df$group <- m[match(w_df$sample, m$sample),]$group
   w_df$day <- m[match(w_df$sample, m$sample),]$day
+  w_df$study <- m[match(w_df$sample, m$sample),]$study
+  w_df$mouse <- m[match(w_df$sample, m$sample),]$mouse
+  
   
   p <- ggplot(w_df, aes (x = reorder(sample, day), y = value, fill = signature))
-  p <- p + geom_bar( color = "black", size = 0.3, stat = "identity", position = "stack")
-  p <- p + scale_fill_brewer(palette = "Set3") + theme_minimal() + coord_flip()
-  p <- p + facet_grid(group ~ ., space = "free", scales = "free")
+  p <- p + geom_bar(size = 0, color = "black", stat = "identity",
+                    position = "stack")
+  p <- p + scale_fill_manual(values = palette) + theme_minimal() + coord_flip()
+  p <- p + facet_wrap(~ study + group,  scales = "free_x", ncol = 2, shrink = T,
+                      drop =T, strip.position = "left")
   p <- p + xlab("") + ylab("Haplotype Contribution")
+  p <- p + theme_bw() + theme(panel.border = element_blank(),
+                              panel.grid.major = element_blank(),
+                              panel.grid.minor = element_blank(),
+                              axis.line = element_line(color = "black"))
+  p <- p + scale_y_continuous(expand = c(0, 0), limits = c(0, NA))
   
   return(p)
 }
