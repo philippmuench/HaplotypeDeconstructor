@@ -21,13 +21,13 @@ plotHaplotypeMap <- function(sigs) {
 # 
 #' @export
 plotNumberHaplotyes <- function(gof) {
-  m = reshape2::melt(gof, id.vars = c("NumberHaplotyes", "Replicate"),
+  m <- reshape2::melt(gof, id.vars = c("NumberHaplotyes", "Replicate"),
            measure.vars = c("ExplainedVariance"), variable.name = "stat")
-  p = ggplot(m, aes_string(x = "NumberHaplotyes", y = "value", group = "NumberHaplotyes"))
-  p = p + stat_summary(fun.y = mean, colour = "red", size = 2.5, geom = "point")
-  p = p + geom_point(color = "black", shape = 3)
-  p = p + facet_wrap(~stat, nrow = 2, scales = "free")
-  p = p + theme_bw() + xlab("Number of Haplotyes") + ylab("explained variance")
+  p <- ggplot2::ggplot(m, ggplot2::aes_string(x = "NumberHaplotyes", y = "value", group = "NumberHaplotyes"))
+  p = p + ggplot2::stat_summary(fun.y = mean, colour = "red", size = 2.5, geom = "point")
+  p = p + ggplot2::geom_point(color = "black", shape = 3)
+  p = p + ggplot2::facet_wrap(~stat, nrow = 2, scales = "free")
+  p = p + ggplot2::theme_bw() + ggplot2::xlab("Number of Haplotyes") + ggplot2::ylab("explained variance")
   return(p)
 }
 
@@ -44,18 +44,18 @@ plotSamples <- function(s, normalize = FALSE, remove.sample.names =F) {
   set.seed(42)
   palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
   
-  p <- ggplot(w_df)
-  p <- p + geom_bar(aes_string(x = "sample", y = "value", fill = "haplotypes"),
+  p <- ggplot2::ggplot(w_df)
+  p <- p + ggplot2::geom_bar(aes_string(x = "sample", y = "value", fill = "haplotypes"),
                    color = "black", size = 0.3, stat = "identity", position = "stack")
-  p <- p + scale_fill_manual(values = palette) + coord_flip() + theme_bw()
-  p <- p + xlab("") + ylab("Haplotype Contribution")
-  p <- p + theme_bw() + theme(panel.border = element_blank(),
+  p <- p + ggplot2::scale_fill_manual(values = palette) + ggplot2::coord_flip() + ggplot2::theme_bw()
+  p <- p + ggplot2::xlab("") + ggplot2::ylab("Haplotype Contribution")
+  p <- p + ggplot2::theme_bw() + theme(panel.border = element_blank(),
                              panel.grid.major = element_blank(),
                              panel.grid.minor = element_blank(),
                              axis.line = element_line(color = "black"))
-  p <- p + scale_y_continuous(expand = c(0, 0), limits = c(0, NA))
+  p <- p + ggplot2::scale_y_continuous(expand = c(0, 0), limits = c(0, NA))
   if(remove.sample.names)
-    p <- p + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) 
+    p <- p + ggplot2::theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) 
 
   return(p)
 }

@@ -44,23 +44,27 @@ In detail, the syntethic datasets consists of sets of SNPs that
 We evaluate the number of Haplotpyes present in this dataset using `assessNumberHaplotyes`
 
 ```r
+set.seed(42)
+data(syn)
 gof <- assessNumberHaplotyes(syn, 2:6, nReplicates = 1)
 plotNumberHaplotyes(gof)
 ```
-
-![goodness of fit of NMF on synthetic sample](man/figures/gof.png)
 
 We see that the larged fraction of explained variance is reached for 3 haplotpyes, which is equal to the ground truth. We can use this number to recover the haplotypes using `findHaplotypes`
 
 ```r
 decomposed <- findHaplotypes(syn, 3)
 plotHaplotypeMap(decomposed)
-plotSamples(decomposed, normalize = F, percent = T)
 ```
 ![decomposed haplotypes on synthetic sample](man/figures/syn_dec.png)
 
-Which correctly identifies that a haplotype (here H3) is present in samples V1 - V5 in equal proportions, a second haplotype H2 is present on samples V6-V8 and a third haplotpye H1 is present on all samples and is increasing in its contribution.
+Which correctly identifies that H1-3 are not sharing any SNPs
 
+```r
+plotSamples(decomposed, normalize = F)
+```
+
+Which correctly identifies that a haplotype (here H3) is present in samples V1 - V5 in equal proportions, a second haplotype H2 is present on samples V6-V8 and a third haplotpye H1 is present on all samples and is increasing in its contribution.
 
 ## Haplotype detection on real data
 

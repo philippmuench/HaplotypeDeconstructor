@@ -1,4 +1,3 @@
-bug <- "Akkermansia_muciniphila"
 # claudia
 dat <- readRDS("data-raw/omm_claudia_new.rds")
 dat$sample <-  paste0("claudia ", dat$sample)
@@ -28,6 +27,6 @@ df_reseq <- data.frame(sample = dat$sample, group = dat$mouse.group,
                        study= "Resequencing",
                        mouse = dat$mouse.id)
 
-omm2_metadata <- rbind(df_claudia, df_ab, df_reseq)
+omm_metadata <- rbind(df_claudia, df_ab, df_reseq)
 
-usethis::use_data(omm2_metadata, overwrite = TRUE)
+usethis::use_data(omm_metadata, overwrite = TRUE)
