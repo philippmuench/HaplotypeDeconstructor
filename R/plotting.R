@@ -104,7 +104,7 @@ plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
   w_df$day <- m[match(w_df$sample, m$sample),]$day
   set.seed(42)
   palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
-  
+
   p <- ggplot(w_df, aes (x = reorder(sample, day), y = value, fill = signature))
   p <- p + geom_bar( color = "black", size = 0.3, stat = "identity", position = "stack")
   p <- p +  scale_fill_manual(values = palette) + theme_minimal() + coord_flip()
