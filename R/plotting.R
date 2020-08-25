@@ -102,10 +102,12 @@ plotSamplesByGroup <- function(s, m, normalize = FALSE, percent = FALSE) {
   
   w_df$group <- m[match(w_df$sample, m$sample),]$group
   w_df$day <- m[match(w_df$sample, m$sample),]$day
+  set.seed(42)
+  palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
   
   p <- ggplot(w_df, aes (x = reorder(sample, day), y = value, fill = signature))
   p <- p + geom_bar( color = "black", size = 0.3, stat = "identity", position = "stack")
-  p <- p + scale_fill_brewer(palette = "Set3") + theme_minimal() + coord_flip()
+  p <- p +  scale_fill_manual(values = palette) + theme_minimal() + coord_flip()
   p <- p + facet_grid(group ~ ., space = "free", scales = "free")
   p <- p + xlab("") + ylab("Haplotype Contribution")
   
@@ -173,11 +175,13 @@ plotHaplotypeAnnotation <- function(decomposed, omm_snp_annotation,
   }
   
   all_sig <- do.call(rbind, res)
+  set.seed(42)
+  palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
   
   p <- ggplot(all_sig, aes(x= reorder(annotation, value), y = value, fill = factor(sig_num)))
   p <- p + geom_bar(stat = "identity")
   p <- p + coord_flip() + theme_minimal() + xlab("") 
-  p <- p + scale_fill_brewer(palette = "Set3") 
+  p <- p + scale_fill_manual(values = palette) 
   p <- p + facet_wrap(. ~ sig_num)
   
   return(p)

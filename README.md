@@ -95,7 +95,7 @@ Will evaluate 2 to 10 haplotypes and output a graphic similar to this:
 Based on this figure it seems not clear how many Haplotypes are in this sample.
 
 ```r
-decomposed <- findHaplotypes(omm, 8)
+decomposed <- findHaplotypes(omm, 10)
 plotHaplotypeMap(decomposed)
 ```
 
@@ -106,8 +106,8 @@ On this plot once can see which SNPs are contributing to a Haplotype,
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
 ```r
-plotSamples(decomposed, normalize = F, remove.sample.names =T)
-ggsave("decomposed_1.png", width = 8, height = 10)
+plotSamples(decomposed, normalize = F, remove.sample.names = T)
+ggsave("man/figures/decomposed_1.png", width = 8, height = 10)
 ```
 
 ![Decomposed contributions](man/figures/decomposed_1.png)
@@ -135,8 +135,8 @@ We can visualize the SNP annotations for each Haplotype
 
 ```r
 data(omm_snp_annotation)
-plotHaplotypeAnnotation(decomposed, omm_snp_annotation, hide_hyp = T, sig_threshold = 0.05)
-ggsave("haplotypefunction.png", width = 12, height = 12)
+plotHaplotypeAnnotation(decomposed, omm_snp_annotation, hide_hyp = T, sig_threshold = 0.1)
+ggsave("man/figures/haplotypefunction.png", width = 12, height = 12)
 ```
 
 ![by function](man/figures/haplotypefunction.png)
