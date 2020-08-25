@@ -1,8 +1,7 @@
 nmfDecomposition <- function(x, r, includeFit = FALSE) {
-  y = NMF::nmf(x, r, method= "snmf/l", maxIter = 2000L, eta = -1,
-               beta = 0.01, bi_conv = c(0, 10), eps_conv = 1e-04)
+  y = NMF::nmf(x, r, method= "snmf/l", beta = 1e-3)
   w = NMF::basis(y) ## signatures x k
-  h = t(coef(y)) ## samples x k
+  h = t(NMF::coef(y)) ## samples x k
   ## order signatures
   ord = order(rowMax(t(w)), decreasing = TRUE)
   w = w[ ,ord]
