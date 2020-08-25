@@ -30,7 +30,3 @@ assessNumberHaplotyes <- function(m, nHaps, nReplicates = 1) {
   gof = do.call(rbind, dev)
   return(gof)
 }
-
-
-
-

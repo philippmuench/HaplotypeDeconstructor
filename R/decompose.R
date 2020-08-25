@@ -1,7 +1,6 @@
-# # applies decompositon on x, for number of signatures r 
-#' @export
 nmfDecomposition <- function(x, r, includeFit = FALSE) {
-  y = NMF::nmf(x, r, method= "snmf/l")
+  y = NMF::nmf(x, r, method= "snmf/l", maxIter = 2000L, eta = -1,
+               beta = 0.01, bi_conv = c(0, 10), eps_conv = 1e-04)
   w = NMF::basis(y) ## signatures x k
   h = t(coef(y)) ## samples x k
   ## order signatures
@@ -18,19 +17,15 @@ nmfDecomposition <- function(x, r, includeFit = FALSE) {
   return(res)
 }
 
+
 # # applies decompositon on x, for number of signatures r 
 #' @export
 findHaplotypes <- function(x, r) {
   x <- data.matrix(x)
-  dc <- nmfDecomposition(x, r, includeFit = FALSE)
-  
+  dc <- nmfDecomposition(x, r, includeFit = T)
   res <- list("signatures" = dc$w, "samples" = dc$h,
               "fitted" = dc$v, "observed" = dc$m, 
               "nHapotypes" = r)
   return(res)
 }
-
-
-
-
 
