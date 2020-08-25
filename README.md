@@ -99,10 +99,6 @@ decomposed <- findHaplotypes(omm, 10)
 plotHaplotypeMap(decomposed)
 ```
 
-On this plot once can see which SNPs are contributing to a Haplotype, 
-
-![Haplotype heatmap](man/figures/heat.png)
-
 The result is a heatmap showing the SNPs (y axis) and the Haplotypes (i.e. the decomposed "signatures") on the x axis. Here we see that most SNPs are not part of a haplotype. 
 
 ```r
