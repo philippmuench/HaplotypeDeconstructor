@@ -1,18 +1,46 @@
+
+
 # 
 #' @export
-plotHaplotypeMap <- function(sigs) {
+plotSNPProfile <- function(profile, row_split, title) {
+  library(ComplexHeatmap)
+  col_fun = circlize::colorRamp2(c(0, 0.5, 1), c("white", "#F0C06A", "#7C3233"))
+  ht <- ComplexHeatmap::Heatmap(profile,  name = "AF", col = col_fun, border = TRUE,
+                                cluster_rows = F, cluster_columns = F,
+                                show_row_names = F,
+                                column_title = title,
+                                row_gap = unit(1, "mm"),column_gap = unit(1, "mm"),
+                                row_split = row_split,
+                                row_title_gp = gpar(col = c("black") , fontsize = 6),
+                                column_title_gp = gpar(col = c("black") , fontsize = 6),
+                                column_names_gp = gpar(fontsize = 6),
+                                row_names_gp = gpar(fontsize = 6))
+  return(ht)
+}
+
+
+# 
+#' @export
+plotHaplotypeMap <- function(sigs, cluster_columns = F, cluster_rows = F) {
   df <- data.matrix(sigs$signatures)
+  col_fun = circlize::colorRamp2(c(0, max(df)/2, max(df)), c("white", "grey", "black"))
+  
   pal <- wesanderson::wes_palette("Zissou1", 21, type = "continuous")
   ha <- ComplexHeatmap::Heatmap(df,
-                               name = "contribution",
+                              column_title = "Haplotype contributions",
+                               name = "Contribution",
                                border = TRUE,
-                               column_title = "Haplotype contributions",
                                show_row_names = F,
-                               cluster_rows = F,
+                               row_gap = unit(1, "mm"),column_gap = unit(1, "mm"),
+                               cluster_rows = cluster_rows,
+                               row_title_gp = gpar(col = c("black") , fontsize = 6),
+                               column_title_gp = gpar(col = c("black") , fontsize = 6),
+                               column_names_gp = gpar(fontsize = 6),
+                               row_names_gp = gpar(fontsize = 6),
                                show_column_dend = F,
                                show_row_dend = F,
-                               cluster_columns = T,
-                               col = pal)
+                               cluster_columns = cluster_columns,
+                               col = col_fun)
   
   return(ha)
 }
@@ -42,7 +70,7 @@ plotSamples <- function(s, normalize = FALSE, remove.sample.names = F, title = "
   w_df$haplotypes = factor(w_df$haplotypes)
   
   set.seed(42)
-  palette <- randomcoloR::distinctColorPalette(decomposed$nHapotypes)
+  palette <- randomcoloR::distinctColorPalette(s$nHapotypes)
   
   p <- ggplot2::ggplot(w_df)
   p <- p + ggplot2::geom_bar(aes_string(x = "sample", y = "value", fill = "haplotypes"),
@@ -183,6 +211,25 @@ plotHaplotypeAnnotation <- function(decomposed, omm_snp_annotation,
   p <- p + coord_flip() + theme_minimal() + xlab("") 
   p <- p + scale_fill_manual(values = palette) 
   p <- p + facet_wrap(. ~ sig_num)
+  p <- p + theme(text = element_text(size = 6))
   
+  return(p)
+}
+
+plotSamples2 <- function(s) {
+  s$combined_variance <- NULL
+  s2 <- reshape2::melt(s, varnames = c("sample"))
+  set.seed(42)
+  palette <- randomcoloR::distinctColorPalette(length(unique(s2$variable)))
+  library(ggplot2)
+  p <- ggplot2::ggplot(s2, aes(x = sample, y = value, fill = variable)) 
+  p <- p + ggplot2::geom_bar(color = "black", size = 0.3, stat = "identity", position = "stack")
+  p <- p + ggplot2::scale_fill_manual(values = palette) 
+  p <- p + ggplot2::coord_flip() + ggplot2::theme_bw()
+  p <- p + ggplot2::xlab("") + ggplot2::ylab("explained variance")
+  p <- p + ggplot2::theme_bw() + theme(panel.border = element_blank(),
+                                       panel.grid.major = element_blank(),
+                                       panel.grid.minor = element_blank(),
+                                       axis.line = element_line(color = "black"))
   return(p)
 }

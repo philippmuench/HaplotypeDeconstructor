@@ -16,7 +16,6 @@ nmfDecomposition <- function(x, r, includeFit = FALSE) {
   return(res)
 }
 
-
 # # applies decompositon on x, for number of signatures r 
 #' @export
 findHaplotypes <- function(x, r) {
@@ -28,3 +27,30 @@ findHaplotypes <- function(x, r) {
   return(res)
 }
 
+# if ratio=T, the individual haplotype contributions are calculated as fraction to the total haplotype contribution 
+HaplotypeEvar <- function(decomposed){
+  res_per_sample_all <- list() #stores the % explained variance of all haplotypes on a sample
+  observed <- as.data.frame(decomposed$observed)
+  signatures <- as.data.frame(decomposed$signatures)
+  h <- data.matrix(decomposed$samples)
+  h <- h / rowSums(h)
+  it <- 1
+  # reconstruct using all haplotypes
+  rec <- as.matrix(as.data.frame(decomposed$samples)) %*% t(as.matrix(signatures))
+  # calculate total haplotype contribution
+  NMF::evar(as.matrix(rec), as.matrix(t(observed)))
+  it <- 1
+  for (s in 1:ncol(decomposed$observed)){
+    message(paste0("Processing Sample"), s)
+    res_per_sample_all[[it]] <- data.frame(sample= colnames(decomposed$observed)[s], missing_variance = 1- NMF::evar(as.matrix(rec[s,]),
+                                                                                                                     as.matrix(observed[, s])),
+                                           combined_variance = NMF::evar(as.matrix(rec[s,]),
+                                                                         as.matrix(observed[, s])))
+    it <- it + 1
+  }
+  res <- do.call("rbind", res_per_sample_all)
+  norm_h <- h * 100 * res$combined_variance
+  results <- cbind(res, norm_h)
+  results$missing_variance <- 100 * results$missing_variance
+  return(results)
+}
