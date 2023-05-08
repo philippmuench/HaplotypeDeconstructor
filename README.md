@@ -1,5 +1,7 @@
 # Haplotype reconstruction using non-negative matrix factorization 
 
+[![DOI](https://zenodo.org/badge/286985676.svg)](https://zenodo.org/badge/latestdoi/286985676)
+
 Detects linear combinations of SNPs (signatures) using NMF that explain a global SNP profile. This library is heavily based on the [SomaticSignatures](https://github.com/juliangehring/SomaticSignatures) package and uses the "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares" implementation from [Kim et al.](https://academic.oup.com/bioinformatics/article/23/12/1495/225472)
 
 
